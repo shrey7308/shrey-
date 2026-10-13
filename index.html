@@ -101,6 +101,57 @@ header {
 .nav-links a:hover:after,.nav-links a.active:after {
   width: 100%
 }
+.nav-outcomes {
+  position: relative
+}
+.outcomes-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer
+}
+.outcomes-toggle span {
+  color: var(--orange);
+  font-size: 15px;
+  transition: transform .2s
+}
+.outcomes-toggle[aria-expanded="true"] span {
+  transform: rotate(180deg)
+}
+.outcomes-dropdown {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 12px);
+  left: -14px;
+  width: 280px;
+  padding: 8px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: 0 14px 30px #20282018
+}
+.outcomes-dropdown[hidden] {
+  display: none
+}
+.outcomes-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  font: 11px var(--mono);
+  cursor: pointer
+}
+.outcomes-dropdown button:hover,
+.outcomes-dropdown button[aria-current="true"] {
+  background: var(--green)
+}
 .nav-links .pill {
   background: var(--ink);
   color: var(--paper);
@@ -385,6 +436,97 @@ h1 em {
   color: #60665d;
   margin: 0
 }
+.outcome-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 10px;
+  scrollbar-width: thin
+}
+.outcome-tab {
+  flex: 0 0 auto;
+  padding: 12px 15px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font: 10px var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: background .2s,color .2s,border-color .2s
+}
+.outcome-tab:hover {
+  border-color: var(--ink);
+  color: var(--ink)
+}
+.outcome-tab[aria-selected="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper)
+}
+.outcome-panel {
+  padding: 34px;
+  background: #e9e8df;
+  border: 1px solid #e0ded5
+}
+.outcome-panel[hidden] {
+  display: none
+}
+.outcome-panel-head {
+  display: grid;
+  grid-template-columns: 94px 1fr;
+  gap: 22px;
+  align-items: start
+}
+.outcome-panel .outcome-no {
+  font: 11px var(--mono);
+  color: var(--orange);
+  padding-top: 8px
+}
+.outcome-panel h3 {
+  font: 500 clamp(28px,4vw,42px)/1.1 var(--serif);
+  letter-spacing: -.045em;
+  margin: 0 0 12px
+}
+.outcome-panel .outcome-description {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #60665d;
+  margin: 0;
+  max-width: 760px
+}
+.outcome-panel .outcome-evidence {
+  margin: 24px 0 0 116px
+}
+.outcome-panel .ethics-cases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 28px
+}
+.outcome-panel .ethics-case {
+  padding: 24px;
+  background: var(--paper);
+  border: 1px solid var(--line)
+}
+.outcome-panel .ethics-case h4 {
+  font: 500 24px/1.15 var(--serif);
+  letter-spacing: -.04em;
+  margin: 10px 0 16px
+}
+.outcome-panel .ethics-case h5 {
+  font: 10px var(--mono);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 18px 0 7px
+}
+.outcome-panel .ethics-case p {
+  font-size: 12px;
+  line-height: 1.75;
+  color: #60665d;
+  margin: 0
+}
 .closing {
   background: var(--green);
   padding: 54px 0
@@ -534,6 +676,20 @@ footer {
   .nav-links .pill {
     padding: 13px
   }
+  .nav-outcomes {
+    width: 100%
+  }
+  .outcomes-toggle {
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0
+  }
+  .outcomes-dropdown {
+    position: static;
+    width: 100%;
+    margin: 2px 0 8px;
+    box-shadow: none
+  }
   .intro {
     padding: 72px 0 45px
   }
@@ -602,10 +758,28 @@ footer {
     margin-top: 19px;
     font-size: 9px
   }
-  .outcome-ethics .ethics-cases {
-    grid-template-columns: 1fr
+  .outcome-tabs {
+    margin-right: -20px;
+    padding-right: 20px
   }
-  .ethics-case {
+  .outcome-tab {
+    padding: 11px 12px
+  }
+  .outcome-panel {
+    padding: 22px 18px
+  }
+  .outcome-panel-head {
+    grid-template-columns: 1fr;
+    gap: 8px
+  }
+  .outcome-panel .outcome-evidence {
+    margin-left: 0
+  }
+  .outcome-panel .ethics-cases {
+    grid-template-columns: 1fr;
+    gap: 12px
+  }
+  .outcome-panel .ethics-case {
     padding: 20px
   }
   .citations {
@@ -675,9 +849,18 @@ footer {
         <a class="active" href="#about">
           About me
         </a>
-        <a href="#outcomes">
-          Learning outcomes
-        </a>
+        <div class="nav-outcomes">
+          <button class="outcomes-toggle" id="outcomesToggle" type="button" aria-expanded="false" aria-controls="outcomesDropdown">
+            Learning outcomes <span aria-hidden="true">⌄</span>
+          </button>
+          <div class="outcomes-dropdown" id="outcomesDropdown" hidden>
+            <button type="button" data-outcome-target="panel-outcome-1">01 · History of AI</button>
+            <button type="button" data-outcome-target="panel-outcome-2">02 · AI Ethics</button>
+            <button type="button" data-outcome-target="panel-outcome-3">03 · Core AI Techniques</button>
+            <button type="button" data-outcome-target="panel-outcome-4">04 · Machine Learning Approaches</button>
+            <button type="button" data-outcome-target="panel-outcome-5">05 · Generative AI and LLMs</button>
+          </div>
+        </div>
         <a href="#citations">
           Citations ↗
         </a>
@@ -694,7 +877,7 @@ footer {
           <h1>
             Learning to
             <br>
-            think with 
+            think with
             <em>
               machines.
             </em>
@@ -711,7 +894,7 @@ footer {
             I'm a student exploring artificial intelligence and machine learning: how these systems work, what they can make possible, and how to use them thoughtfully.
           </p>
           <a class="text-link" href="#about">
-            A little about me 
+            A little about me
             <span>
               ↓
             </span>
@@ -764,142 +947,101 @@ footer {
     <section class="outcomes wrap" id="outcomes">
       <div class="outcome-heading">
         <div>
-          <div class="mono">
-            02 / Course reflection
-          </div>
-          <h2>
-            Five learning outcomes
-            <span style="color:var(--orange)">
-              .
-            </span>
-          </h2>
+          <div class="mono">02 / Course reflection</div>
+          <h2>Five learning outcomes<span style="color:var(--orange)">.</span></h2>
         </div>
-        <p>
-          Each outcome has its own space for your reflection and supporting work. Keep scrolling to explore all five.
-        </p>
+        <p>Select an outcome to open its tab. You can also choose one from the Learning Outcomes menu above.</p>
       </div>
-      <div class="outcome-list">
-        <section class="outcome" id="outcome-1">
-          <div class="outcome-no">
-            OUTCOME · 01
-          </div>
-          <div>
-            <h3>
-              History of AI
-            </h3>
-            <p>
-              Explain key moments in the historical development of AI and machine learning, and relate them to modern AI systems.
-            </p>
-            <div class="outcome-evidence">
-              Reflection & evidence · Add your work here
-            </div>
-          </div>
-          <span class="outcome-arrow">
-            01
-          </span>
-        </section>
-        <section class="outcome outcome-ethics" id="outcome-2">
-          <div class="outcome-no">
-            OUTCOME · 02
-          </div>
-          <div>
-            <h3>
-              AI Ethics
-            </h3>
-            <p>
-              Identify and discuss ethical issues associated with AI and machine learning, including their societal implications.
-            </p>
-          </div>
-          <span class="outcome-arrow">
-            02
-          </span>
-          <div class="ethics-cases">
-            <article class="ethics-case">
-              <div class="mono">Case study · 01</div>
-              <h4>The Predictive Policing Pilot</h4>
-              <h5>Scenario</h5>
-              <p>Fairmont uses an AI system called SafeZone to predict which neighborhoods may experience more crime. It analyzes past crime data to help police decide where to deploy officers. However, arrest records can reflect where police have focused in the past, not just where crime occurs. SafeZone repeatedly sends officers to those same areas, leading to more arrests and reinforcing the pattern. This can make the system appear successful even when its predictions are not accurate. Before budget reviews, a police captain sends extra officers to these neighborhoods to make the system look effective and secure more funding.</p>
-              <h5>Ethical analysis</h5>
-              <p>The main concern is bias and fairness. SafeZone treats more arrests as evidence of more crime, even though arrests may increase because an area is policed more heavily. This can direct disproportionate attention toward predominantly minority neighborhoods, even when actual crime rates are not higher. Residents may feel targeted and lose trust in the police. The captain’s actions make the problem worse by using the system to pursue funding rather than serve the community. The city should audit SafeZone’s accuracy, examine how policing patterns affect its data, and avoid treating AI predictions as facts. This case shows how AI can reinforce existing problems when its data is biased.</p>
-            </article>
-            <article class="ethics-case">
-              <div class="mono">Case study · 02</div>
-              <h4>The Essay Scorer</h4>
-              <h5>Scenario</h5>
-              <p>The Springfield School District uses an AI system called ScoreWrite to grade students’ essays on a year-end exam. The district expects the system to make grading more consistent, so many teachers begin relying on its scores instead of giving detailed feedback. A researcher later discovers that ScoreWrite gives lower scores to English language learners and students who use different dialects, even when their ideas are just as strong. The system was trained mostly on highly rated essays written in standard academic English. The district also begins using its scores to evaluate teachers, although the system was never designed for that purpose.</p>
-              <h5>Ethical analysis</h5>
-              <p>The main concern is bias and fairness in education. ScoreWrite favors students who write in a particular style, putting others at a disadvantage even when they have strong ideas. Lower scores can harm their grades and future opportunities. Teachers’ overreliance on the system is also a problem: students need feedback that helps them understand mistakes and improve, and a score alone may not explain what needs work. Using the scores to evaluate teachers is unfair because student performance depends on more than teaching alone. The district should test ScoreWrite on essays from students with varied backgrounds and language styles, and teachers should continue reviewing the essays themselves. Consistent scores are not necessarily fair or correct.</p>
-            </article>
-          </div>
-        </section>
-        <section class="outcome" id="outcome-3">
-          <div class="outcome-no">
-            OUTCOME · 03
-          </div>
-          <div>
-            <h3>
-              Core AI Techniques
-            </h3>
-            <p>
-              Describe how core AI techniques, such as search and adversarial reasoning, are used to model intelligent behavior.
-            </p>
-            <div class="outcome-evidence">
-              Reflection & evidence · Add your work here
-            </div>
-          </div>
-          <span class="outcome-arrow">
-            03
-          </span>
-        </section>
-        <section class="outcome" id="outcome-4">
-          <div class="outcome-no">
-            OUTCOME · 04
-          </div>
-          <div>
-            <h3>
-              Machine Learning Approaches
-            </h3>
-            <p>
-              Explain fundamental machine learning approaches and distinguish between the major learning paradigms.
-            </p>
-            <div class="outcome-evidence">
-              Reflection & evidence · Add your work here
-            </div>
-          </div>
-          <span class="outcome-arrow">
-            04
-          </span>
-        </section>
-        <section class="outcome" id="outcome-5">
-          <div class="outcome-no">
-            OUTCOME · 05
-          </div>
-          <div>
-            <h3>
-              Generative AI and Large Language Models
-            </h3>
-            <p>
-              Describe how generative AI and large language models operate at a conceptual level, and evaluate when their use is appropriate.
-            </p>
-            <div class="outcome-evidence">
-              Reflection & evidence · Add your work here
-            </div>
-          </div>
-          <span class="outcome-arrow">
-            05
-          </span>
-        </section>
+
+      <div class="outcome-tabs" role="tablist" aria-label="Learning outcomes">
+        <button class="outcome-tab" id="tab-outcome-1" type="button" role="tab" aria-selected="true" aria-controls="panel-outcome-1" tabindex="0" data-outcome-tab="panel-outcome-1">01 · History of AI</button>
+        <button class="outcome-tab" id="tab-outcome-2" type="button" role="tab" aria-selected="false" aria-controls="panel-outcome-2" tabindex="-1" data-outcome-tab="panel-outcome-2">02 · AI Ethics</button>
+        <button class="outcome-tab" id="tab-outcome-3" type="button" role="tab" aria-selected="false" aria-controls="panel-outcome-3" tabindex="-1" data-outcome-tab="panel-outcome-3">03 · Core AI Techniques</button>
+        <button class="outcome-tab" id="tab-outcome-4" type="button" role="tab" aria-selected="false" aria-controls="panel-outcome-4" tabindex="-1" data-outcome-tab="panel-outcome-4">04 · Machine Learning</button>
+        <button class="outcome-tab" id="tab-outcome-5" type="button" role="tab" aria-selected="false" aria-controls="panel-outcome-5" tabindex="-1" data-outcome-tab="panel-outcome-5">05 · Generative AI &amp; LLMs</button>
       </div>
+
+      <section class="outcome-panel" id="panel-outcome-1" role="tabpanel" aria-labelledby="tab-outcome-1" tabindex="0">
+        <div class="outcome-panel-head">
+          <div class="outcome-no">OUTCOME · 01</div>
+          <div>
+            <h3>History of AI</h3>
+            <p class="outcome-description">Explain key moments in the historical development of AI and machine learning, and relate them to modern AI systems.</p>
+          </div>
+        </div>
+        <div class="outcome-evidence">Reflection &amp; evidence · Add your work here</div>
+      </section>
+
+      <section class="outcome-panel" id="panel-outcome-2" role="tabpanel" aria-labelledby="tab-outcome-2" tabindex="0" hidden>
+        <div class="outcome-panel-head">
+          <div class="outcome-no">OUTCOME · 02</div>
+          <div>
+            <h3>AI Ethics</h3>
+            <p class="outcome-description">Identify and discuss ethical issues associated with AI and machine learning, including their societal implications.</p>
+          </div>
+        </div>
+        <div class="ethics-cases">
+          <article class="ethics-case">
+            <div class="mono">Case study · 01</div>
+            <h4>The Predictive Policing Pilot</h4>
+            <h5>Scenario</h5>
+            <p>Fairmont uses an AI system called SafeZone to predict which neighborhoods may experience more crime. It analyzes past crime data to help police decide where to deploy officers. However, arrest records can reflect where police have focused in the past, not just where crime occurs. SafeZone repeatedly sends officers to those same areas, leading to more arrests and reinforcing the pattern. This can make the system appear successful even when its predictions are not accurate. Before budget reviews, a police captain sends extra officers to these neighborhoods to make the system look effective and secure more funding.</p>
+            <h5>Ethical analysis</h5>
+            <p>The main concern is bias and fairness. SafeZone treats more arrests as evidence of more crime, even though arrests may increase because an area is policed more heavily. This can direct disproportionate attention toward predominantly minority neighborhoods, even when actual crime rates are not higher. Residents may feel targeted and lose trust in the police. The captain’s actions make the problem worse by using the system to pursue funding rather than serve the community. The city should audit SafeZone’s accuracy, examine how policing patterns affect its data, and avoid treating AI predictions as facts. This case shows how AI can reinforce existing problems when its data is biased.</p>
+          </article>
+          <article class="ethics-case">
+            <div class="mono">Case study · 02</div>
+            <h4>The Essay Scorer</h4>
+            <h5>Scenario</h5>
+            <p>The Springfield School District uses an AI system called ScoreWrite to grade students’ essays on a year-end exam. The district expects the system to make grading more consistent, so many teachers begin relying on its scores instead of giving detailed feedback. A researcher later discovers that ScoreWrite gives lower scores to English language learners and students who use different dialects, even when their ideas are just as strong. The system was trained mostly on highly rated essays written in standard academic English. The district also begins using its scores to evaluate teachers, although the system was never designed for that purpose.</p>
+            <h5>Ethical analysis</h5>
+            <p>The main concern is bias and fairness in education. ScoreWrite favors students who write in a particular style, putting others at a disadvantage even when they have strong ideas. Lower scores can harm their grades and future opportunities. Teachers’ overreliance on the system is also a problem: students need feedback that helps them understand mistakes and improve, and a score alone may not explain what needs work. Using the scores to evaluate teachers is unfair because student performance depends on more than teaching alone. The district should test ScoreWrite on essays from students with varied backgrounds and language styles, and teachers should continue reviewing the essays themselves. Consistent scores are not necessarily fair or correct.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="outcome-panel" id="panel-outcome-3" role="tabpanel" aria-labelledby="tab-outcome-3" tabindex="0" hidden>
+        <div class="outcome-panel-head">
+          <div class="outcome-no">OUTCOME · 03</div>
+          <div>
+            <h3>Core AI Techniques</h3>
+            <p class="outcome-description">Describe how core AI techniques, such as search and adversarial reasoning, are used to model intelligent behavior.</p>
+          </div>
+        </div>
+        <div class="outcome-evidence">Reflection &amp; evidence · Add your work here</div>
+      </section>
+
+      <section class="outcome-panel" id="panel-outcome-4" role="tabpanel" aria-labelledby="tab-outcome-4" tabindex="0" hidden>
+        <div class="outcome-panel-head">
+          <div class="outcome-no">OUTCOME · 04</div>
+          <div>
+            <h3>Machine Learning Approaches</h3>
+            <p class="outcome-description">Explain fundamental machine learning approaches and distinguish between the major learning paradigms.</p>
+          </div>
+        </div>
+        <div class="outcome-evidence">Reflection &amp; evidence · Add your work here</div>
+      </section>
+
+      <section class="outcome-panel" id="panel-outcome-5" role="tabpanel" aria-labelledby="tab-outcome-5" tabindex="0" hidden>
+        <div class="outcome-panel-head">
+          <div class="outcome-no">OUTCOME · 05</div>
+          <div>
+            <h3>Generative AI and Large Language Models</h3>
+            <p class="outcome-description">Describe how generative AI and large language models operate at a conceptual level, and evaluate when their use is appropriate.</p>
+          </div>
+        </div>
+        <div class="outcome-evidence">Reflection &amp; evidence · Add your work here</div>
+      </section>
     </section>
     <section class="citations" id="citations">
       <div class="wrap">
         <div class="citations-head">
           <div>
             <div class="mono">
-              03 / References & acknowledgments
+              03 / References &amp; acknowledgments
             </div>
             <h2>
-              Sources & citations
+              Sources &amp; citations
               <span style="color:var(--orange)">
                 .
               </span>
@@ -987,7 +1129,7 @@ footer {
           </h2>
         </div>
         <a class="button" href="#citations">
-          View sources & citations 
+          View sources &amp; citations
           <span>
             ↓
           </span>
@@ -1001,7 +1143,7 @@ footer {
         © Shrey Patel · AI / ML Fieldbook
       </span>
       <a href="#citations">
-        Citations & sources ↑
+        Citations &amp; sources ↑
       </a>
       <span>
         Built with curiosity
@@ -1009,7 +1151,104 @@ footer {
     </div>
   </footer>
   <script>
-    const menu=document.querySelector('#menu'),links=document.querySelector('#navlinks');menu.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.setAttribute('aria-expanded',open);menu.textContent=open?'×':'☰'});links.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{links.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.textContent='☰'}));
+    const menu = document.querySelector('#menu');
+    const links = document.querySelector('#navlinks');
+    const outcomeToggle = document.querySelector('#outcomesToggle');
+    const outcomeDropdown = document.querySelector('#outcomesDropdown');
+    const outcomeTabs = [...document.querySelectorAll('[data-outcome-tab]')];
+    const outcomePanels = [...document.querySelectorAll('.outcome-panel')];
+
+    menu.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      menu.setAttribute('aria-expanded', open);
+      menu.textContent = open ? '×' : '☰';
+    });
+
+    function closeOutcomesDropdown() {
+      outcomeDropdown.hidden = true;
+      outcomeToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    function activateOutcome(panelId, shouldScroll = false) {
+      outcomeTabs.forEach(tab => {
+        const selected = tab.dataset.outcomeTab === panelId;
+        tab.setAttribute('aria-selected', selected);
+        tab.tabIndex = selected ? 0 : -1;
+      });
+
+      outcomePanels.forEach(panel => {
+        panel.hidden = panel.id !== panelId;
+      });
+
+      outcomeDropdown.querySelectorAll('[data-outcome-target]').forEach(item => {
+        const selected = item.dataset.outcomeTarget === panelId;
+        if (selected) {
+          item.setAttribute('aria-current', 'true');
+        } else {
+          item.removeAttribute('aria-current');
+        }
+      });
+
+      closeOutcomesDropdown();
+
+      if (shouldScroll) {
+        document.querySelector('#outcomes').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      if (window.matchMedia('(max-width: 700px)').matches) {
+        links.classList.remove('open');
+        menu.setAttribute('aria-expanded', 'false');
+        menu.textContent = '☰';
+      }
+    }
+
+    outcomeToggle.addEventListener('click', () => {
+      const open = outcomeDropdown.hidden;
+      outcomeDropdown.hidden = !open;
+      outcomeToggle.setAttribute('aria-expanded', open);
+    });
+
+    outcomeDropdown.querySelectorAll('[data-outcome-target]').forEach(item => {
+      item.addEventListener('click', () => {
+        activateOutcome(item.dataset.outcomeTarget, true);
+      });
+    });
+
+    outcomeTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activateOutcome(tab.dataset.outcomeTab));
+      tab.addEventListener('keydown', event => {
+        let nextIndex = index;
+        if (event.key === 'ArrowRight') nextIndex = (index + 1) % outcomeTabs.length;
+        else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + outcomeTabs.length) % outcomeTabs.length;
+        else if (event.key === 'Home') nextIndex = 0;
+        else if (event.key === 'End') nextIndex = outcomeTabs.length - 1;
+        else return;
+
+        event.preventDefault();
+        outcomeTabs[nextIndex].focus();
+        activateOutcome(outcomeTabs[nextIndex].dataset.outcomeTab);
+      });
+    });
+
+    document.addEventListener('click', event => {
+      if (!event.target.closest('.nav-outcomes')) closeOutcomesDropdown();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !outcomeDropdown.hidden) {
+        closeOutcomesDropdown();
+        outcomeToggle.focus();
+      }
+    });
+
+    links.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        links.classList.remove('open');
+        menu.setAttribute('aria-expanded', 'false');
+        menu.textContent = '☰';
+        closeOutcomesDropdown();
+      });
+    });
   </script>
 </body>
 </html>
