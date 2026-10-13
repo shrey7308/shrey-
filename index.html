@@ -356,6 +356,35 @@ h1 em {
   place-items: center;
   font-size: 17px
 }
+.outcome-ethics .ethics-cases {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px
+}
+.ethics-case {
+  padding: 24px;
+  background: var(--paper);
+  border: 1px solid var(--line)
+}
+.ethics-case h4 {
+  font: 500 24px/1.15 var(--serif);
+  letter-spacing: -.04em;
+  margin: 10px 0 16px
+}
+.ethics-case h5 {
+  font: 10px var(--mono);
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 18px 0 7px
+}
+.ethics-case p {
+  font-size: 12px;
+  line-height: 1.75;
+  color: #60665d;
+  margin: 0
+}
 .closing {
   background: var(--green);
   padding: 54px 0
@@ -573,6 +602,12 @@ footer {
     margin-top: 19px;
     font-size: 9px
   }
+  .outcome-ethics .ethics-cases {
+    grid-template-columns: 1fr
+  }
+  .ethics-case {
+    padding: 20px
+  }
   .citations {
     padding: 58px 0
   }
@@ -717,10 +752,10 @@ footer {
           </div>
           <div class="about-copy">
             <p>
-              My name is Shrey Patel. I'm majoring in Artificial Intelligence and Machine Learning in the Pennoni Honors College. I got interested in AI back in high school when I took computer science classes. That was also around the time AI was starting to grow a lot, and I thought it was cool how it was showing up in so many different fields. When I found out Drexel had just started an AI/ML major that year, it made sense for me to pick it. One moment that made AI feel real to me was using Face ID on my phone. It's something small I do every day, but it made me think about how much is actually happening just for my phone to recognize my face that fast, and that made me want to learn how it works.
+              My name is Shrey Patel, and I’m majoring in Artificial Intelligence and Machine Learning in the Pennoni Honors College. I became interested in the field in high school, when I took computer science classes. AI was beginning to grow rapidly, and I was fascinated by how it was appearing across so many fields. When I learned that Drexel had just introduced an AI/ML major that year, it felt like the right path for me. One moment that made AI feel real was using Face ID on my phone. It’s a small part of my daily routine, but recognizing a face in a second involves a lot behind the scenes. That made me want to understand how it works.
             </p>
             <p>
-              I also have a concern about AI, especially about the environment. AI systems run on data centers, and those data centers use a lot of water to stay cool. As AI keeps growing, that water use will probably keep growing too, and I don't think people talk about it enough. As for the course, the part I'm most curious about is learning how things like search and adversarial reasoning help AI act "intelligent." I want to understand how AI actually makes decisions, not just see the end result. That's basically why I chose this major, I want to know how AI works, not just how to use it. Outside of school, I'm a big football fan, and the Cleveland Browns are my team.
+              I also have concerns about AI, especially its environmental impact. Data centers use large amounts of water to cool the systems that run AI, and I worry that this use will continue to grow without enough public attention. In this course, I’m especially interested in how search and adversarial reasoning help AI behave intelligently. I want to understand the logic behind how AI makes decisions, not just see the results. That’s why I chose this major: I want to know how AI works, not just how to use it. Outside of school, I’m a big football fan, and I root for the Cleveland Browns.
             </p>
           </div>
         </div>
@@ -763,7 +798,7 @@ footer {
             01
           </span>
         </section>
-        <section class="outcome" id="outcome-2">
+        <section class="outcome outcome-ethics" id="outcome-2">
           <div class="outcome-no">
             OUTCOME · 02
           </div>
@@ -774,13 +809,28 @@ footer {
             <p>
               Identify and discuss ethical issues associated with AI and machine learning, including their societal implications.
             </p>
-            <div class="outcome-evidence">
-              Reflection & evidence · Add your work here
-            </div>
           </div>
           <span class="outcome-arrow">
             02
           </span>
+          <div class="ethics-cases">
+            <article class="ethics-case">
+              <div class="mono">Case study · 01</div>
+              <h4>The Predictive Policing Pilot</h4>
+              <h5>Scenario</h5>
+              <p>Fairmont uses an AI system called SafeZone to predict which neighborhoods may experience more crime. It analyzes past crime data to help police decide where to deploy officers. However, arrest records can reflect where police have focused in the past, not just where crime occurs. SafeZone repeatedly sends officers to those same areas, leading to more arrests and reinforcing the pattern. This can make the system appear successful even when its predictions are not accurate. Before budget reviews, a police captain sends extra officers to these neighborhoods to make the system look effective and secure more funding.</p>
+              <h5>Ethical analysis</h5>
+              <p>The main concern is bias and fairness. SafeZone treats more arrests as evidence of more crime, even though arrests may increase because an area is policed more heavily. This can direct disproportionate attention toward predominantly minority neighborhoods, even when actual crime rates are not higher. Residents may feel targeted and lose trust in the police. The captain’s actions make the problem worse by using the system to pursue funding rather than serve the community. The city should audit SafeZone’s accuracy, examine how policing patterns affect its data, and avoid treating AI predictions as facts. This case shows how AI can reinforce existing problems when its data is biased.</p>
+            </article>
+            <article class="ethics-case">
+              <div class="mono">Case study · 02</div>
+              <h4>The Essay Scorer</h4>
+              <h5>Scenario</h5>
+              <p>The Springfield School District uses an AI system called ScoreWrite to grade students’ essays on a year-end exam. The district expects the system to make grading more consistent, so many teachers begin relying on its scores instead of giving detailed feedback. A researcher later discovers that ScoreWrite gives lower scores to English language learners and students who use different dialects, even when their ideas are just as strong. The system was trained mostly on highly rated essays written in standard academic English. The district also begins using its scores to evaluate teachers, although the system was never designed for that purpose.</p>
+              <h5>Ethical analysis</h5>
+              <p>The main concern is bias and fairness in education. ScoreWrite favors students who write in a particular style, putting others at a disadvantage even when they have strong ideas. Lower scores can harm their grades and future opportunities. Teachers’ overreliance on the system is also a problem: students need feedback that helps them understand mistakes and improve, and a score alone may not explain what needs work. Using the scores to evaluate teachers is unfair because student performance depends on more than teaching alone. The district should test ScoreWrite on essays from students with varied backgrounds and language styles, and teachers should continue reviewing the essays themselves. Consistent scores are not necessarily fair or correct.</p>
+            </article>
+          </div>
         </section>
         <section class="outcome" id="outcome-3">
           <div class="outcome-no">
